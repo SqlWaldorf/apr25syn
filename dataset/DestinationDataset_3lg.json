@@ -1,0 +1,20 @@
+{
+	"name": "DestinationDataset_3lg",
+	"properties": {
+		"linkedServiceName": {
+			"referenceName": "nju2uarp25demo-WorkspaceDefaultStorage",
+			"type": "LinkedServiceReference"
+		},
+		"annotations": [],
+		"type": "Parquet",
+		"typeProperties": {
+			"location": {
+				"type": "AzureBlobFSLocation",
+				"folderPath": "RAW/trips",
+				"fileSystem": "dlapr25"
+			},
+			"compressionCodec": "snappy"
+		},
+		"schema": []
+	}
+}
