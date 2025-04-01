@@ -1,0 +1,20 @@
+{
+	"name": "DestinationDataset_jmq",
+	"properties": {
+		"linkedServiceName": {
+			"referenceName": "nju2uarp25demo-WorkspaceDefaultStorage",
+			"type": "LinkedServiceReference"
+		},
+		"annotations": [],
+		"type": "Parquet",
+		"typeProperties": {
+			"location": {
+				"type": "AzureBlobFSLocation",
+				"folderPath": "RAW/awdata",
+				"fileSystem": "dlapr25"
+			},
+			"compressionCodec": "snappy"
+		},
+		"schema": []
+	}
+}
