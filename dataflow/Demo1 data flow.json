@@ -1,0 +1,63 @@
+{
+	"name": "Demo1 data flow",
+	"properties": {
+		"description": "just a demo",
+		"type": "MappingDataFlow",
+		"typeProperties": {
+			"sources": [
+				{
+					"dataset": {
+						"referenceName": "airportdata",
+						"type": "DatasetReference"
+					},
+					"name": "airport"
+				}
+			],
+			"sinks": [
+				{
+					"dataset": {
+						"referenceName": "Parquet1",
+						"type": "DatasetReference"
+					},
+					"name": "sink1"
+				}
+			],
+			"transformations": [
+				{
+					"name": "split1"
+				},
+				{
+					"name": "derivedColumn1"
+				},
+				{
+					"name": "filter1"
+				}
+			],
+			"scriptLines": [
+				"source(output(",
+				"          Code as string,",
+				"          Name as string,",
+				"          TotalSeats as double,",
+				"          Country as string,",
+				"          Latitude as double,",
+				"          Longitude as double",
+				"     ),",
+				"     allowSchemaDrift: true,",
+				"     validateSchema: false,",
+				"     ignoreNoFilesFound: false) ~> airport",
+				"airport split(TotalSeats < 0,",
+				"     disjoint: false) ~> split1@(negativeSeats, positiveSeats)",
+				"split1@positiveSeats derive(column1 = case(TotalSeats<10000,\"Small\",\"Large\")) ~> derivedColumn1",
+				"derivedColumn1 filter(Country==\"Belgium\") ~> filter1",
+				"filter1 sink(allowSchemaDrift: true,",
+				"     validateSchema: false,",
+				"     format: 'parquet',",
+				"     umask: 0022,",
+				"     preCommands: [],",
+				"     postCommands: [],",
+				"     skipDuplicateMapInputs: true,",
+				"     skipDuplicateMapOutputs: true) ~> sink1"
+			]
+		}
+	}
+}
