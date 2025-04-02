@@ -1,0 +1,36 @@
+{
+	"name": "Demo1 data flow1",
+	"properties": {
+		"type": "Flowlet",
+		"typeProperties": {
+			"sources": [],
+			"sinks": [],
+			"transformations": [
+				{
+					"name": "split1"
+				},
+				{
+					"name": "derivedColumn1"
+				},
+				{
+					"name": "airport"
+				}
+			],
+			"scriptLines": [
+				"input(output(",
+				"          Code as string,",
+				"          Name as string,",
+				"          TotalSeats as double,",
+				"          Country as string,",
+				"          Latitude as double,",
+				"          Longitude as double",
+				"     ),",
+				"     order: 0,",
+				"     allowSchemaDrift: true) ~> airport",
+				"airport split(TotalSeats < 0,",
+				"     disjoint: false) ~> split1@(negativeSeats, positiveSeats)",
+				"split1@positiveSeats derive(column1 = case(TotalSeats<10000,\"Small\",\"Large\")) ~> derivedColumn1"
+			]
+		}
+	}
+}
